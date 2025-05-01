@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
 import { AppError } from '../middleware/errorHandler';
 import { RegisterInput, LoginInput, ForgotPasswordInput, ResetPasswordInput } from '../types/auth';
+import { addToBlacklist } from '../utils/tokenBlacklist';
 
 const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
@@ -202,6 +203,24 @@ export const verifyEmail = async (
     });
 
     res.json({ message: 'Email successfully verified' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    
+    if (token) {
+      addToBlacklist(token);
+    }
+
+    res.json({ message: 'Successfully logged out' });
   } catch (error) {
     next(error);
   }

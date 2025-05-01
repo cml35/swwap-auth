@@ -10,9 +10,14 @@ dotenv.config();
 
 const app = express();
 
+// CORS configuration
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://localhost:8081', 'exp://192.168.1.16:8081'],
+  credentials: true,
+}));
+
 // Middleware
 app.use(helmet());
-app.use(cors());
 app.use(express.json());
 
 // Rate limiting
@@ -28,7 +33,7 @@ app.use('/api/auth', authRouter);
 // Error handling
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
