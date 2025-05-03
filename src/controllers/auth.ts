@@ -7,7 +7,7 @@ import { RegisterInput, LoginInput, ForgotPasswordInput, ResetPasswordInput } fr
 import { addToBlacklist } from '../utils/tokenBlacklist';
 
 const prisma = new PrismaClient();
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production';
 
 export const register = async (
   req: Request<{}, {}, RegisterInput>,
